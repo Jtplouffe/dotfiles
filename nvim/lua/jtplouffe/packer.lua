@@ -13,6 +13,8 @@ return require('packer').startup(function(use)
         requires = { {"nvim-lua/plenary.nvim"} }
     })
 
+    use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+
     use({
         "ellisonleao/gruvbox.nvim",
         as = "gruvbox",
@@ -64,11 +66,13 @@ return require('packer').startup(function(use)
 
     use("airblade/vim-gitgutter")
 
-    use {
-        'nvim-tree/nvim-tree.lua',
+    use({
+        "nvim-tree/nvim-tree.lua",
         requires = {
-            'nvim-tree/nvim-web-devicons', -- optional, for file icons
+            "nvim-tree/nvim-web-devicons", -- optional, for file icons
         }
-    }
+    })
+
+    use("ahmedkhalf/project.nvim")
 end)
 
