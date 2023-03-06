@@ -9,6 +9,17 @@ lsp.ensure_installed({
     "rust_analyzer"
 })
 
+-- Fix Undefined global 'vim'
+lsp.configure('lua_ls', {
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
+    }
+})
+
 local cmp = require("cmp")
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
@@ -39,7 +50,7 @@ lsp.setup_nvim_cmp({
     }
 })
 
-lsp.on_attach(function(client, bufnr)
+local on_attach = function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts) -- Go to definition
@@ -52,7 +63,9 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>cr", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
     vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
-end)
+end
+
+lsp.on_attach(on_attach)
 
 lsp.setup()
 
@@ -64,7 +77,17 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
+vim.diagnostic.config({
+    virtual_text = true
+})
+
 local signature = require("lsp_signature")
 signature.setup({
-    wrap = false
+    wrap = false,
+    hint_enable = false
+})
+
+local lspconfig = require("lspconfig")
+lspconfig.dartls.setup({
+    on_attach = on_attach
 })
