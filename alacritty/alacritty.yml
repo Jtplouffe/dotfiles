@@ -1,0 +1,14 @@
+font:
+  normal:
+    family: JetBrainsMono NF
+    style: Regular
+  size: 12
+
+live_config_reload: true
+
+key_bindings:
+  - { key: Right, mods: Alt, chars: "\eF" }
+  - { key: Left, mods: Alt, chars: "\eB" }
+
+import:
+  - ~/.config/alacritty/themes/themes/gruvbox_dark.yaml

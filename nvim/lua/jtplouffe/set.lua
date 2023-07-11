@@ -29,3 +29,5 @@ vim.opt.colorcolumn = "120"
 vim.g.mapleader = " "
 
 vim.opt.pumheight = 16
+
+vim.opt.bg = "dark"
