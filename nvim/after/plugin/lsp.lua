@@ -28,7 +28,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<Tab>"] = nil,
-    ["<S-Tab>"] = nil
+    ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
 })
 
 lsp.setup_nvim_cmp({
@@ -48,24 +48,27 @@ lsp.set_preferences({
     }
 })
 
-lsp.on_attach(function(client, bufnr)
+lsp.on_attach(function(_, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
-    -- vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts) -- Go to definition
-    vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts) -- Go to references
-    vim.keymap.set("n", "gh", function() vim.lsp.buf.hover() end, opts)      -- Hover
+    vim.keymap.set("n", "ld", function() vim.lsp.buf.definition() end, opts) -- Go to definition
+    vim.keymap.set("n", "lr", function() vim.lsp.buf.references() end, opts) -- Go to references
+    vim.keymap.set("n", "lh", function() vim.lsp.buf.hover() end, opts)      -- Hover
 
-    vim.keymap.set("n", "<leader>cd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>cr", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
-    vim.keymap.set("v", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
+    -- Use telescope "<leader>td" instead.
+    -- vim.keymap.set("n", "<leader>cd", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>lr", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
+    vim.keymap.set("v", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
 end)
 
 lsp.setup()
 
 vim.diagnostic.config({
-    virtual_text = true
+    virtual_text = true,
+    update_in_insert = true,
+    severity_sort = true,
 })
 
 local signature = require("lsp_signature")

@@ -4,9 +4,9 @@ require'nvim-treesitter.configs'.setup {
 	  "c",
 	  "lua",
 	  "vim",
-	  "help",
+	  -- "help",
 	  "query",
-
+      "vimdoc",
 	  "rust",
 	  "javascript",
 	  "typescript",
