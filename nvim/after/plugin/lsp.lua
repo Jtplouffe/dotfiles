@@ -51,9 +51,9 @@ lsp.set_preferences({
 lsp.on_attach(function(_, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
-    vim.keymap.set("n", "ld", function() vim.lsp.buf.definition() end, opts) -- Go to definition
-    vim.keymap.set("n", "lr", function() vim.lsp.buf.references() end, opts) -- Go to references
-    vim.keymap.set("n", "lh", function() vim.lsp.buf.hover() end, opts)      -- Hover
+    vim.keymap.set("n", "<leader>ld", function() vim.lsp.buf.definition() end, opts) -- Go to definition
+    vim.keymap.set("n", "<leader>lr", function() vim.lsp.buf.references() end, opts) -- Go to references
+    vim.keymap.set("n", "<leader>lh", function() vim.lsp.buf.hover() end, opts)      -- Hover
 
     -- Use telescope "<leader>td" instead.
     -- vim.keymap.set("n", "<leader>cd", function() vim.diagnostic.open_float() end, opts)
