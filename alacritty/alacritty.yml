@@ -7,8 +7,8 @@ font:
 live_config_reload: true
 
 key_bindings:
-  - { key: Left, mods: Alt, chars: "\x1BB" }
-  - { key: Right, mods: Alt, chars: "\x1BF" }
+  - { key: Left, mods: Alt, chars: "\x1bb" }
+  - { key: Right, mods: Alt, chars: "\x1bf" }
 
 import:
   - ~/.config/alacritty/themes/themes/gruvbox_dark.yaml
