@@ -1,16 +1,7 @@
-local lsp = require("lsp-zero")
-
-lsp.preset("recommended")
-
-lsp.ensure_installed({
-    "tsserver",
-    "eslint",
-    "lua_ls",
-    "rust_analyzer"
-})
+local lsp_zero = require("lsp-zero")
 
 -- Fixes undefined global 'vim'
-lsp.configure('lua_ls', {
+lsp_zero.configure('lua_ls', {
     settings = {
         Lua = {
             diagnostics = {
@@ -21,24 +12,34 @@ lsp.configure('lua_ls', {
 })
 
 local cmp = require("cmp")
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-    ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<Tab>"] = nil,
-    ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
-})
-
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings,
+cmp.setup({
+    snippet = {
+        -- REQUIRED - you must specify a snippet engine
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        end,
+    },
+    mapping = cmp.mapping.preset.insert({
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<Tab>"] = nil,
+        ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
+        ["<CR>"] = cmp.mapping.confirm({ select = false })
+    }),
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+    }, { name = "buffer" }),
     experimental = {
         ghost_text = true
     }
 })
 
-lsp.set_preferences({
+lsp_zero.set_preferences({
     suggest_lsp_servers = false,
     sign_icons = {
         error = "E",
@@ -48,7 +49,7 @@ lsp.set_preferences({
     }
 })
 
-lsp.on_attach(function(_, bufnr)
+lsp_zero.on_attach(function(_, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
     vim.keymap.set("n", "<leader>ld", function() vim.lsp.buf.definition() end, opts) -- Go to definition
@@ -63,7 +64,7 @@ lsp.on_attach(function(_, bufnr)
     vim.keymap.set("v", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts) -- Format
 end)
 
-lsp.setup()
+lsp_zero.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
@@ -75,4 +76,12 @@ local signature = require("lsp_signature")
 signature.setup({
     wrap = false,
     hint_enable = false
+})
+
+require("mason").setup({})
+require("mason-lspconfig").setup({
+    ensure_installed = {},
+    handlers = {
+        lsp_zero.default_setup
+    }
 })

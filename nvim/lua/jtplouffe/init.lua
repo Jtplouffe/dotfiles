@@ -1,3 +1,3 @@
 require("jtplouffe.remap")
-require("jtplouffe.packer")
+require("jtplouffe.lazy")
 require("jtplouffe.set")
