@@ -6,7 +6,7 @@ require'nvim-treesitter.configs'.setup {
 	  "vim",
 	  -- "help",
 	  "query",
-	  "vimdoc",
+      "vimdoc",
 	  "rust",
 	  "javascript",
 	  "typescript",
